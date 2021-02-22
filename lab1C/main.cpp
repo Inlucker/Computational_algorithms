@@ -2,7 +2,28 @@
 
 using namespace std;
 
+double *get_difs(int x, int n, int size, const double table[][3])
+{
+    double difs[n];
 
+    double new_table[n][2];
+    new_table[0][0] = table[0][0];
+    new_table[0][1] = table[0][1];
+
+    int id = 0;
+
+    for (int i = 0; i < size; i++)
+    {
+        if (x > table[i][0])
+        {
+            new_table[0][0] = table[i][0];
+            new_table[0][1] = table[i][1];
+            id = i;
+        }
+    }
+
+    return difs;
+}
 
 int main()
 {
@@ -21,6 +42,7 @@ int main()
                                 {0.50, 0.707, 3},
                                 {0.75, 0.383, 4},
                                 {1.0, 0.0,    5}};
+
 
 
     return 0;
