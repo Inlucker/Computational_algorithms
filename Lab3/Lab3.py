@@ -167,9 +167,16 @@ def main():
         x = x/10
         spline = build_spline(x_table, y_table, len(y_table))
         print("Введите x:", x)
-        print("Реальное значение = {:^7f}".format(function(x)))
-        print("Интерполяция сплайнами = {:^7f}".format(spline_interpolation(spline, x)))
-        print("Интерполяция полиномом Ньютона (3-ей степени) = {:^7f}".format(newton_interpolation(x, x_table, y_table, 3)))
+        real_res = function(x)
+        spline_res = spline_interpolation(spline, x)
+        newton_res = newton_interpolation(x, x_table, y_table, 3)
+        print("Реальное значение = {:^.6f}".format(real_res))
+        print("Интерполяция сплайнами = {:^.6f}".format(spline_res))
+        if (real_res != 0):
+            print("Погрешность = {:.4f}%".format((fabs(spline_res - real_res) / fabs(real_res)) * 100))
+        print("Интерполяция полиномом Ньютона (3-ей степени) = {:^.6f}".format(newton_res))
+        if (real_res != 0):
+            print("Погрешность = {:.4f}%".format((fabs(newton_res - real_res) / fabs(real_res)) * 100))
         print()
 
 if __name__ == '__main__':

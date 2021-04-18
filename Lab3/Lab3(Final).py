@@ -1,22 +1,18 @@
 #Newton Interpolation
 from math import fabs, ceil
 
-# Search for the beginning of the polynomial
 def find_beginning(x, table, table_size, nearest_value, degree):
 
     degree += 1
 
-    # Point to the left of segment:
     if (nearest_value == 0 and table[nearest_value] > x):
         print('Error!')
         return 0
 
-    # Point to the right of segment:
     if (nearest_value == table_size - 1 and table[nearest_value] < x):
         print('Error!')
         return table_size - degree - 1
 
-    # Point to the left of the nearby or equal of the nearby:
     if (x <= table[nearest_value]):
         if (nearest_value < (degree) / 2):
             return 0
@@ -26,7 +22,6 @@ def find_beginning(x, table, table_size, nearest_value, degree):
 
         return nearest_value - degree / 2
 
-    # Point to the right of the nearby:
     if (x > table[nearest_value]):
         if (nearest_value < (ceil(degree / 2) - 1)):
             return 0
@@ -38,7 +33,6 @@ def find_beginning(x, table, table_size, nearest_value, degree):
 
     return 0
 
-# Search for the nearest value y0
 def nearest_value(x, table, size_table):
 
     if (x < table[0]):
@@ -57,7 +51,6 @@ def nearest_value(x, table, size_table):
 
     return for_first_y
 
-# Finding the value of Newton's interpolation polynomial:
 def newton_polinom(x, degree, beginnig, table_x, table_y):
 
     result = table_y[beginnig]
@@ -136,14 +129,12 @@ def spline_interpolation(splines, x):
         j = n - 1
         while i + 1 < j:
             k = i + (j - i) // 2
-            # if x <= splines[k].x:
             if x <= splines[k][4]:
                 j = k
             else:
                 i = k
         s = splines[j]
 
-    # dx = x - s.x
     dx = x - s[4]
     #print(s)
     # Вычисляем значение сплайна в заданной точке по схеме Горнера
@@ -162,15 +153,16 @@ def main():
         x_table.append(i)
         y_table.append(function(i))
 
-    #x = float(input("Введите x: "))
-    for x in range(0, 101):
-        x = x/10
-        spline = build_spline(x_table, y_table, len(y_table))
-        print("Введите x:", x)
-        print("Реальное значение = {:^7f}".format(function(x)))
-        print("Интерполяция сплайнами = {:^7f}".format(spline_interpolation(spline, x)))
-        print("Интерполяция полиномом Ньютона (3-ей степени) = {:^7f}".format(newton_interpolation(x, x_table, y_table, 3)))
-        print()
+    x = float(input("Введите x: "))
+    spline = build_spline(x_table, y_table, len(y_table))
+    real_res = function(x)
+    spline_res = spline_interpolation(spline, x)
+    newton_res = newton_interpolation(x, x_table, y_table, 3)
+    print("Реальное значение = {:^.6f}".format(real_res))
+    print("Интерполяция сплайнами = {:^.6f}".format(spline_res))
+    print("Погрешность = {:.4f}%".format((fabs(spline_res - real_res) / fabs(real_res)) * 100))
+    print("Интерполяция полиномом Ньютона (3-ей степени) = {:^.6f}".format(newton_res))
+    print("Погрешность = {:.4f}%".format((fabs(newton_res - real_res) / fabs(real_res)) * 100))
 
 if __name__ == '__main__':
     main()
